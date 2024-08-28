@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title><%= PRODUCT_NAME %></title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicons/favicon-16x16.png"
+    />
+  </head>
+  <body class="TScroll">
+    <noscript>
+      <strong>
+        We're sorry but <%= PRODUCT_NAME %> doesn't work properly without
+        JavaScript enabled. Please enable it to continue.
+      </strong>
+    </noscript>
+    <div id="app">
+      <style scoped>
+        html,
+        body,
+        #app,
+        ._loader-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          width: 100vw;
+          height: 100vh;
+          background-color: hsl(210deg 3% 16%);
+        }
+        ._loader-wrapper {
+          position: relative;
+          width: 8rem;
+          height: 8rem;
+        }
+
+        ._loader-logo,
+        ._loader-inner-wrapper,
+        ._loader-outer-wrapper {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+
+        ._loader-logo {
+          width: 70%;
+          height: 70%;
+        }
+
+        ._loader-inner-wrapper {
+          width: 75%;
+          height: 75%;
+        }
+        ._loader-outer-wrapper {
+          width: 90%;
+          height: 90%;
+        }
+
+        ._loader-inner,
+        ._loader-outer {
+          width: 100%;
+          height: 100%;
+        }
+
+        ._loader-inner,
+        ._loader-outer {
+          box-sizing: border-box;
+          border-style: solid;
+          border-radius: 9999px;
+          border-width: 0.4rem;
+        }
+
+        ._loader-inner {
+          border-left-color: transparent;
+          border-right-color: transparent;
+          border-top-color: #6b7280;
+          border-bottom-color: #6b7280;
+          animation: spin 1s linear infinite;
+        }
+
+        ._loader-outer {
+          border-left-color: #a3a3a3;
+          border-right-color: #a3a3a3;
+          border-top-color: transparent;
+          border-bottom-color: transparent;
+          animation: spin 750ms linear reverse infinite;
+        }
+
+        ._loader-message {
+          font-weight: 700;
+          color: rgba(33, 33, 33, 0.5);
+          display: none;
+        }
+
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      </style>
+      <div class="_loader-container">
+        <div class="_loader-wrapper">
+          <img class="_loader-logo" src="/favicons/apple-touch-icon.png" />
+          <div class="_loader-inner-wrapper">
+            <div class="_loader-inner"></div>
+          </div>
+          <div class="_loader-outer-wrapper">
+            <div class="_loader-outer"></div>
+          </div>
+        </div>
+        <div class="_loader-message">Loading, please wait...</div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

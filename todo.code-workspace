@@ -1,0 +1,127 @@
+{
+  "folders": [
+    {
+      "path": "api"
+    },
+    {
+      "path": "client"
+    }
+  ],
+  "settings": {
+    "task.allowAutomaticTasks": "off"
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Start Server (API + Queue + Client)",
+        "dependsOn": ["API", "Queue", "Client"],
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Preview Build",
+        "type": "shell",
+        "command": "npm run preview",
+        "windows": {
+          "command": "npm run preview"
+        },
+        "group": "build",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "runOptions": {
+          "runOn": "folderOpen"
+        },
+        "problemMatcher": [],
+        "options": {
+          "cwd": "${workspaceFolder}/../client"
+        }
+      },
+      {
+        "label": "Build",
+        "type": "shell",
+        "command": "npm run build",
+        "windows": {
+          "command": "npm run build"
+        },
+        "group": "build",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "runOptions": {
+          "runOn": "folderOpen"
+        },
+        "problemMatcher": [],
+        "options": {
+          "cwd": "${workspaceFolder}/../client"
+        }
+      },
+      {
+        "label": "Client",
+        "type": "shell",
+        "command": "npm run serve --port=8081",
+        "windows": {
+          "command": "npm run serve --port=8081"
+        },
+        "group": "none",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "runOptions": {
+          "runOn": "folderOpen"
+        },
+        "problemMatcher": [],
+        "options": {
+          "cwd": "${workspaceFolder}/../client"
+        }
+      },
+      {
+        "label": "API",
+        "type": "shell",
+        "command": "php artisan serve --host=0.0.0.0 --port=8001",
+        "windows": {
+          "command": "php artisan serve --host=0.0.0.0 --port=8001"
+        },
+        "group": "none",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "runOptions": {
+          "runOn": "folderOpen"
+        },
+        "problemMatcher": [],
+        "options": {
+          "cwd": "${workspaceFolder}/../api"
+        }
+      },
+      {
+        "label": "Queue",
+        "type": "shell",
+        "command": "php artisan queue:work",
+        "windows": {
+          "command": "php artisan queue:work"
+        },
+        "group": "none",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "runOptions": {
+          "runOn": "folderOpen"
+        },
+        "problemMatcher": [],
+        "options": {
+          "cwd": "${workspaceFolder}/../api"
+        }
+      }
+    ]
+  }
+}

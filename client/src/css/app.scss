@@ -1,0 +1,99 @@
+@use "./fonts/dosis.scss";
+
+@layer base {
+  :root {
+    --color-primary: 210deg 79% 46%;
+    --color-secondary: 174deg 63% 40%;
+    --color-accent: 291deg 64% 42%;
+    --color-background: 0deg 0% 96%;
+    --color-background-accent: 210deg 17% 98%;
+    // --color-foreground: 210deg 7% 40%;
+    --color-foreground: 30deg 7% 21%;
+    --color-dark: 30deg 7% 21%;
+    --color-light: 246deg 13% 95%;
+    --color-positive: 134deg 70% 43%;
+    --color-negative: 353deg 100% 38%;
+    --color-info: 190deg 83% 56%;
+    --color-warning: 44deg 88% 58%;
+    --color-page-background: 210deg 17% 98%;
+    /* --color-page-background: 210deg 13% 97%; */
+  }
+
+  :root[class="dark"] {
+    --color-background: 210deg 14% 12%;
+    --color-foreground: 210deg 7% 81%;
+    --color-background-accent: 210deg 5% 21%;
+    --color-page-background: 210deg 3% 16%;
+  }
+}
+
+@layer utilities {
+  html {
+    @apply max-h-[100dvh] overflow-hidden font-dosis;
+  }
+
+  body {
+    @apply max-h-[100dvh] overflow-y-auto;
+  }
+
+  div#app {
+    @apply min-h-[100dvh] min-w-full overflow-hidden;
+  }
+
+  html,
+  body,
+  div#app {
+    @apply m-0 bg-background-accent p-0 text-foreground transition-colors;
+  }
+
+  .bg-dots {
+    background-image: radial-gradient(
+      circle,
+      hsl(var(--color-foreground) / 0.1) 0.1rem,
+      hsl(var(--color-foreground) / 0.1) 0.1rem,
+      transparent 0.25rem
+    );
+    background-size: 4.5rem 4.5rem;
+  }
+
+  .bg-dots-animated {
+    animation: bg-animated 2s linear infinite;
+  }
+
+  @keyframes bg-animated {
+    0% {
+      background-position-x: 0%;
+      background-position-y: 0%;
+    }
+    100% {
+      background-position-x: 9rem;
+      background-position-y: 9rem;
+    }
+  }
+
+  div,
+  p,
+  span {
+    @apply leading-normal subpixel-antialiased;
+  }
+
+  button {
+    @apply relative select-none overflow-hidden leading-none outline-transparent;
+  }
+  // html,
+  // body,
+  // .TScroll,
+  * {
+    @apply scrollbar scrollbar-track-foreground/25 scrollbar-thumb-gray-900  scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-w-2 scrollbar-h-2 dark:scrollbar-track-page-background dark:scrollbar-thumb-gray-500;
+  }
+
+  .noTapHighlight {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}

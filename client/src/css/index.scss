@@ -1,0 +1,11 @@
+@use "tailwindcss/base";
+@use "tailwindcss/components";
+@use "tailwindcss/utilities";
+
+@use "material-icons/iconfont/material-icons.css";
+@use "./fonts/open-sans.scss";
+
+@use "@vuepic/vue-datepicker/dist/main.css";
+
+@use "./app.scss";
+@use "./components/index.scss" as componentStyle;

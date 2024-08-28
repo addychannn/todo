@@ -1,0 +1,43 @@
+{
+  "_names": ["opacity", "toLeft", "toRight", "toBottom", "toTop"],
+  "opacity": {
+    "enterFromClass": "opacity-0",
+    "enterToClass": "opacity-100",
+    "enterActiveClass": "transition-opacity duration-300 delay-300",
+    "leaveFromClass": "opacity-100",
+    "leaveToClass": "opacity-0",
+    "leaveActiveClass": "transition-opacity duration-300"
+  },
+  "toLeft": {
+    "enterFromClass": "opacity-0 -translate-x-5",
+    "enterToClass": "opacity-100",
+    "enterActiveClass": "transition-all duration-300 absolute top-2",
+    "leaveFromClass": "opacity-100",
+    "leaveToClass": "opacity-0 -translate-x-5",
+    "leaveActiveClass": "transition-all duration-300 absolute top-2"
+  },
+  "toRight": {
+    "enterFromClass": "opacity-0 translate-x-5",
+    "enterToClass": "opacity-100",
+    "enterActiveClass": "transition-all duration-300 absolute top-2",
+    "leaveFromClass": "opacity-100",
+    "leaveToClass": "opacity-0 translate-x-5",
+    "leaveActiveClass": "transition-all duration-300 absolute top-2"
+  },
+  "toBottom": {
+    "enterFromClass": "opacity-0 -translate-y-5",
+    "enterToClass": "opacity-100",
+    "enterActiveClass": "transition-all duration-300 absolute top-2",
+    "leaveFromClass": "opacity-100",
+    "leaveToClass": "opacity-0 -translate-y-5",
+    "leaveActiveClass": "transition-all duration-300 absolute top-2"
+  },
+  "toTop": {
+    "enterFromClass": "opacity-0 translate-y-5",
+    "enterToClass": "opacity-100",
+    "enterActiveClass": "transition-all duration-300 absolute top-2",
+    "leaveFromClass": "opacity-100",
+    "leaveToClass": "opacity-0 translate-y-5",
+    "leaveActiveClass": "transition-all duration-300 absolute top-2"
+  }
+}

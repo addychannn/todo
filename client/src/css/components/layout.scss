@@ -1,0 +1,30 @@
+@layer components {
+  .layout {
+    @apply flex min-h-[100dvh] max-w-[100dvw] flex-col;
+
+    .layout-header,
+    .layout-footer {
+      @apply flex-shrink-0 flex-grow-0 basis-auto transition-all;
+    }
+
+    .layout-header-fixed {
+      @apply fixed left-0 right-0 top-0 z-[1030] transition-all;
+    }
+
+    .layout-page-container {
+      @apply flex max-w-full flex-auto;
+
+      .layout {
+        @apply min-h-full flex-auto #{!important};
+      }
+
+      .layout-sidebar {
+        @apply flex-shrink-0 flex-grow-0 basis-auto self-auto transition-all;
+      }
+
+      .layout-page {
+        @apply flex-auto self-auto transition-all;
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "settings-roles": ["roles_list", "roles_add", "roles_edit", "roles_delete"],
+  "settings-users": [
+    "users_add",
+    "users_list",
+    "users_edit-profile",
+    "users_edit-account",
+    "users_edit-permission",
+    "users_change-status",
+    "users_give-direct-permissions"
+  ]
+}

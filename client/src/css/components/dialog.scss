@@ -1,0 +1,173 @@
+@layer components {
+  .__dialog_open__ {
+    @apply overflow-hidden #{!important};
+  }
+
+  .__dialog_blur__ {
+    @apply blur-sm #{!important};
+  }
+
+  .__dialog__[class*="-enter-active"],
+  .__dialog__[class*="-leave-active"] {
+    @apply duration-300 ease-in-out;
+  }
+
+  .__dialog__[class*="-leave-active"] {
+    @apply delay-100;
+  }
+
+  .__dialog__[class*="-enter-from"],
+  .__dialog__[class*="-leave-to"] {
+    @apply opacity-0;
+  }
+
+  .__dialog__[class*="-enter-active"]
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply delay-200;
+  }
+
+  // Pop
+  .__dialog__.dialog-pop-enter-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-pop;
+  }
+
+  .__dialog__.dialog-pop-leave-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-pop;
+    animation-direction: reverse;
+  }
+
+  // End - Pop
+
+  // Slide-left
+  .__dialog__.dialog-slide-left-enter-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-slide-in-left;
+  }
+
+  .__dialog__.dialog-slide-left-leave-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-slide-in-left;
+    animation-direction: reverse;
+  }
+
+  // End - Slide-left
+
+  // Slide-right
+  .__dialog__.dialog-slide-right-enter-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-slide-in-right;
+  }
+
+  .__dialog__.dialog-slide-right-leave-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-slide-in-right;
+    animation-direction: reverse;
+  }
+
+  // End - Slide-right
+
+  // Slide-up
+  .__dialog__.dialog-slide-up-enter-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-slide-in-up;
+  }
+
+  .__dialog__.dialog-slide-up-leave-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-slide-in-up;
+    animation-direction: reverse;
+  }
+
+  // End - Slide-up
+
+  // Slide-down
+  .__dialog__.dialog-slide-down-enter-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-slide-in-down;
+  }
+
+  .__dialog__.dialog-slide-down-leave-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-slide-in-down;
+    animation-direction: reverse;
+  }
+
+  // End - Slide-down
+
+  // Pop-Slide-left
+  .__dialog__.dialog-pop-slide-left-enter-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-pop-slide-in-left;
+  }
+
+  .__dialog__.dialog-pop-slide-left-leave-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-pop-slide-in-left;
+    animation-direction: reverse;
+  }
+
+  // End - Pop-Slide-left
+
+  // Pop-Slide-right
+  .__dialog__.dialog-pop-slide-right-enter-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-pop-slide-in-right;
+  }
+
+  .__dialog__.dialog-pop-slide-right-leave-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-pop-slide-in-right;
+    animation-direction: reverse;
+  }
+
+  // End - Pop-Slide-right
+
+  // Pop-Slide-up
+  .__dialog__.dialog-pop-slide-up-enter-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-pop-slide-in-up;
+  }
+
+  .__dialog__.dialog-pop-slide-up-leave-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-pop-slide-in-up;
+    animation-direction: reverse;
+  }
+
+  // End - Pop-Slide-up
+
+  // Pop-Slide-down
+  .__dialog__.dialog-pop-slide-down-enter-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-pop-slide-in-down;
+  }
+
+  .__dialog__.dialog-pop-slide-down-leave-active
+    .__dialog_container__
+    .__dialog_wrapper__ {
+    @apply animate-pop-slide-in-down;
+    animation-direction: reverse;
+  }
+
+  // End - Pop-Slide-down
+}
