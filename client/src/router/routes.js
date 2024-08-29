@@ -97,6 +97,28 @@ export default [
         ],
       },
    //routes
+    {
+      path: "/todo",
+      component: () => import ("@/pages/todo/index.vue"),
+      children:[
+        {
+          path:"/todo",
+          name: "todo",
+          component: () => import("@/pages/todo/ListTask.vue")
+        },
+        {
+          path:"/create/todo",
+          name: "CreateTodo",
+          component: () => import("@/pages/todo/CreateTask.vue")
+        },
+        {
+          path:"/edit/todo",
+          name: "UpdateTodo",
+          component: () => import("@/pages/todo/UpdateTask.vue")
+        }
+    
+      ]
+    },
     
     ],
   },

@@ -18,6 +18,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\LaptopController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,6 +118,12 @@ Route::middleware([$middleAuth, 'throttle:60,1', 'disabled'])->group(function ()
     #region Authentication
         Route::post('/email/resend', [VerificationController::class, 'resend']);
         Route::get('/email/isVerified', [VerificationController::class, 'checkifverified']);
+    #endregion
+
+    #region Task
+
+    Route::get('/tasks',[TaskController::class,'getAllTasks']);
+
     #endregion
 
 });

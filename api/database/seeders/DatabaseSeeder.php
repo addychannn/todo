@@ -18,8 +18,7 @@ class DatabaseSeeder extends Seeder
             RolesTableSeeder::class,
             UsersSeeder::class,
             AddressSeeder::class,
-            ColorSeeder::class,
-            BrandSeeder::class
+            TasksSeeder::class,
         ]);
     }
 }

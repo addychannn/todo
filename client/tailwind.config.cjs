@@ -8,7 +8,7 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx,json}"],
   theme: {
     fontFamily: {
-      dosis: ["Dosis", "Arial", "sans-serif"],
+      dosis: ["Lexend", "Arial", "sans-serif"],
     },
     extend: {
       animation: animation,

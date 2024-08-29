@@ -99,7 +99,7 @@ const $router = useRouter();
 const systemStore = useSystemStore();
 const menu = reactive([
   {
-    title: "Main Navigation",
+    title: "To do",
     hidden: false,
     links: [
       {
@@ -108,6 +108,13 @@ const menu = reactive([
         description: "Dashboard",
         icon: "dashboard",
         hidden: true,
+      },
+      {
+        to: { name: "todo" },
+        label: "Tasks",
+        description: "To do List",
+        icon: "checklist",
+        hidden: false,
       },
      
     ],
