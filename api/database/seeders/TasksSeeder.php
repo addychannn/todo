@@ -15,18 +15,18 @@ class TasksSeeder extends Seeder
     {
         $tasks = [
             [
-                'taskName'=> "Task 1",
+                'task_name'=> "Task 1",
                 'description'=> "This is sample task",
             ],
             [
-                'taskName'=> "Task 2",
+                'task_name'=> "Task 2",
                 'description'=> "This is sample task",
             ],
         ];
 
         foreach($tasks as $task){
             Task::create([
-                'taskName'=>$task['taskName']
+                'task_name'=>$task['task_name']
             ]);
         }
     }

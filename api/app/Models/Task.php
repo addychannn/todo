@@ -12,9 +12,10 @@ class Task extends AppModel
     protected $hashColumnName= 'hash';
 
     protected $fillable = [
-        'taskName',
-        'description',
+        'list_id',
+        'task_name',
         'status',
+
     ];
 
     protected $hidden = [

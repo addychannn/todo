@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LaptopResource extends JsonResource
+class ListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,10 @@ class LaptopResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name'=>$this->name ,
-            'brand'=>$this->brands? new BrandResource($this->brands):null,
-            'color'=>$this->colors? new ColorResource($this->colors):null,
-            'price'=>$this->price,
+            'list_name'=>$this->listName,
             'hash'=>$this->hash,
             'deleted_at'=>$this->deleted_at ? Carbon::parse($this->deleted_at)->format('F d, Y h:i A') : null,
+
         ];
     }
 }

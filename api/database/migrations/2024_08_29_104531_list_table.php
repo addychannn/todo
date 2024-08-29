@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('lists',function(Blueprint $table){
             $table->id();
             $table->string("hash")->unique()->nullable();
-            $table->string("listName");
+            $table->string("list_name");
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

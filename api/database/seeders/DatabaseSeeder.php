@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             RolesTableSeeder::class,
             UsersSeeder::class,
             AddressSeeder::class,
-            TasksSeeder::class,
+            // TasksSeeder::class,
+            // ListSeeder::class,
         ]);
     }
 }

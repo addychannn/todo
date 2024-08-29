@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTaskRequest;
 use App\Http\Resources\TaskResource;
+use App\Models\Lists;
 use App\Models\Task;
 use App\Traits\TaskTrait;
 use Illuminate\Http\Request;
@@ -15,7 +16,14 @@ class TaskController extends Controller
     public function createTask(CreateTaskRequest $request){
         $fields = $request ->validated();
 
-        $task = Task::create($fields);
+        $list = Lists::create([
+            'list_name'=>$fields['list_name']
+        ]);
+
+        $task = Task::create([
+            'list_id'=>$list->hash,
+            'task_name'=>$fields['task_name'],
+        ]);
 
         return response()->json([
             'task'=> $task? new TaskResource($task):null,
@@ -24,6 +32,10 @@ class TaskController extends Controller
             'type'=>"positive"
         ]);
     }
+
+    // separate na ung controller if ieedit each field
+
+
 
     public function getAllTasks(Request $request){
         $request->validate([

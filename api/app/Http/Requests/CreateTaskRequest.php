@@ -22,8 +22,9 @@ class CreateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'taskName'=>'required',
-            'description'=>'nullable',
+            'list_name'=>'required',
+            'task_name'=>'required',
+            
         ];
     }
 }

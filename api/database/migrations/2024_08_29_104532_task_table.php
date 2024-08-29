@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("hash")->unique()->nullable();
             $table->string("list_id");
-            $table->string("taskName");
-            $table->string("description");
+            $table->string("task_name");
             $table->boolean("status")->default(false);
             $table->softDeletes();
             $table->timestamps();

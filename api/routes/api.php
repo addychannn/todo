@@ -124,6 +124,8 @@ Route::middleware([$middleAuth, 'throttle:60,1', 'disabled'])->group(function ()
 
     Route::get('/tasks',[TaskController::class,'getAllTasks']);
 
+    Route::post('/create/task',[TaskController::class,'createTask']);
+
     #endregion
 
 });
