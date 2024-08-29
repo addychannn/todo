@@ -18,6 +18,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\LaptopController;
+use App\Http\Controllers\ListController;
 use App\Http\Controllers\TaskController;
 
 /*
@@ -125,6 +126,14 @@ Route::middleware([$middleAuth, 'throttle:60,1', 'disabled'])->group(function ()
     Route::get('/tasks',[TaskController::class,'getAllTasks']);
 
     Route::post('/create/task',[TaskController::class,'createTask']);
+
+    #endregion
+
+    
+    #region List
+
+    Route::get('/lists',[ListController::class,'getAllLists']);
+
 
     #endregion
 

@@ -12,7 +12,8 @@
         </div>   
         <div>
             <TaskTable
-            :task = "storage" />
+            :task = "storage" 
+            />
         </div>
     </div>
 
@@ -26,7 +27,9 @@
             </svg>
           </button>
           <!-- Modal Content -->
-          <CreateTask />
+          <CreateTask
+          @added="closeModal($event)"
+          @close="showModal = false" />
         </div>
       </div>  
 </template>
@@ -39,5 +42,9 @@ import CreateTask from './CreateTask.vue';
 const showModal = ref(false);
 const storage = ref(null);
 
+const closeModal =(event)=>{
+    showModal.value= false;
+    storage.value=event
+}
 
 </script>
