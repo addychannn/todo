@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 class ListController extends Controller
 {
     public function getAllLists(Request $request){
+        dd('hjhjhj');
         $request->validate([
             'term'=> 'nullable',
             'limit'=> 'nullable',
             'offset'=>'nullable',
         ]);
-
+dd('addy');
         $lists = $this->searchQuery($request->input('term'));
         $count = $lists->count();
         $lists = $lists->limit($request->input('limit'))->offset($request->input('offset'))->orderBy('created_at', 'asc')->get();

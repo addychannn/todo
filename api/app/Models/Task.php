@@ -21,4 +21,8 @@ class Task extends AppModel
     protected $hidden = [
         'id'
     ];
+
+    public function lists(){
+        return $this->hasOne(Lists::class,"hash","list_name");
+    }
 }

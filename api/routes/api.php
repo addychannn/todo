@@ -129,7 +129,7 @@ Route::middleware([$middleAuth, 'throttle:60,1', 'disabled'])->group(function ()
 
     #endregion
 
-    
+
     #region List
 
     Route::get('/lists',[ListController::class,'getAllLists']);

@@ -2,11 +2,11 @@
     <div class="grid grid-cols-4 gap-2">
         <!-- cards -->
         <div 
-        v-for="list in lists"
-        :key="list?.hash" 
+        v-for="task in tasks"
+            :key="task?.hash"
          class="w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="flex flex-row justify-between">
-            <h5 class="flex justify-start mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">{{ list?.list_name }}</h5>
+            <h5 class="flex justify-start mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">{{ task?.list_name }}</h5>
             <div class="flex justify-end items-start">
                 <button @click="" type="button">
                     <TIcon name="edit" class="select-none text-blue-500 hover:text-blue-800  hover:ease-in duration-300 hover:scale-125" size="md" />
@@ -37,10 +37,7 @@ import { ref, inject, onMounted, watchEffect, reactive } from 'vue';
 const $api = inject('$api');
 
 const props = defineProps({
-    list: {
-      type: Object,
-      default: null,
-    },
+ 
 
     task: {
       type: Object,
@@ -58,7 +55,7 @@ const props = defineProps({
     "doneLoading"
   ])
 
-  const lists = ref([]);
+  // const lists = ref([]);
   const tasks = ref([]);
   const showConfirmModal = ref(false);
   const showEditModal = ref(false);
@@ -77,32 +74,32 @@ const props = defineProps({
 
   });
 
-  const addNewList = () => {
-    lists.value.push(props.list);
-  };
+  // const addNewList = () => {
+  //   lists.value.push(props.list);
+  // };
 
   const addNewTask = () => {
     tasks.value.push(props.task);
   };
 
 
-  const getAllLists = (term = null) => {
-    emit("loading")
-    $api.get('/lists',{
-        params:{
-            term: term,
-            limit: searchOptions.limit,
-            offset: searchOptions.offset,
-        }
-    }).then((response) => {
-      lists.value = response.data.data;
-      searchOptions.total = response.data.count;
+  // const getAllLists = (term = null) => {
+  //   emit("loading")
+  //   $api.get('/lists',{
+  //       params:{
+  //           term: term,
+  //           limit: searchOptions.limit,
+  //           offset: searchOptions.offset,
+  //       }
+  //   }).then((response) => {
+  //     lists.value = response.data.data;
+  //     searchOptions.total = response.data.count;
 
-    }).finally(()=>{
-        emit("doneLoading")
-    })
-    ;
-  };
+  //   }).finally(()=>{
+  //       emit("doneLoading")
+  //   })
+  //   ;
+  // };
 
   
   const getAllTasks = (term = null) => {
@@ -114,7 +111,7 @@ const props = defineProps({
             offset: searchOptions.offset,
         }
     }).then((response) => {
-      lists.value = response.data.data;
+      tasks.value = response.data.data;
       searchOptions.total = response.data.count;
 
     }).finally(()=>{
@@ -124,20 +121,20 @@ const props = defineProps({
   };
 
   watchEffect(() => {
-    if (props.list != null) {
-      addNewList();
-    }
+    // if (props.list != null) {
+    //   addNewList();
+    // }
     if (props.task != null) {
       addNewTask();
     }
-    if (props.searchedTerms != ""){
-        searchOptions.offset = 0;
-        getAllLists(props.searchedTerms);
-    }
+    // if (props.searchedTerms != ""){
+    //     searchOptions.offset = 0;
+    //     getAllLists(props.searchedTerms);
+    // }
   });
   
   onMounted(() => {
-    getAllLists("");
+    // getAllLists("");
     getAllTasks("");
   });
 

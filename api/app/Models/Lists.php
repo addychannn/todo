@@ -6,7 +6,7 @@ use App\Traits\ConvertAlwaysDateTimeToDefaultTimezoneTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Lists extends AppModel
-{   
+{
     use SoftDeletes, ConvertAlwaysDateTimeToDefaultTimezoneTrait;
     protected $shouldHashPersist = true;
     protected $hashColumnName = 'hash';
@@ -19,4 +19,7 @@ class Lists extends AppModel
         'íd'
     ];
 
+    public function tasks(){
+        return $this->hasMany(Task::class,"hash","task_name");
+    }
 }
