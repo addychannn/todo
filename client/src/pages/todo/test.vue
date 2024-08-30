@@ -49,7 +49,7 @@
         <!-- Update Button -->
         <button
           type="button"
-          @click="updateList"
+          @click="updateListAndTasks"
           class="text-white bg-green-700 border focus:outline-none hover:bg-green-800 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-800 dark:text-white dark:border-green-600 dark:hover:bg-green-700 dark:hover:border-green-600 dark:focus:ring-green-700"
         >
           UPDATE
@@ -59,8 +59,9 @@
   </template>
   
   
+  
   <script setup>
-  import { reactive, inject, onMounted } from 'vue';
+  import { ref, reactive, inject, onMounted } from 'vue';
   import { notify } from '@/scripts';
   
   const $api = inject('$api');
@@ -68,8 +69,8 @@
   const props = defineProps({
     list: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   });
   
   const emit = defineEmits(['close']);
@@ -77,13 +78,55 @@
   const form = reactive({
     hash: '',
     list_name: '',
-    tasks: [{ name: '' }]
+    tasks: [{ name: '' }], // Initialize with one empty task
   });
   
-  const storeListData = () => {
+  const getAllData = () => {
+    // Initialize form data from props
     form.hash = props.list?.hash || '';
-    form.list_name = props.list?.list_name || '';
-    form.tasks = props.list?.tasks?.map(task => ({ name: task.name })) || [{ name: '' }];
+    form.list_name = props.list?.name || '';
+    form.tasks = props.list?.tasks.map(task => ({ name: task.task_name })) || [{ name: '' }];
+  };
+  
+  const updateList = () => {
+    return $api.patch(`/update/list/${form.hash}`, {
+      list_name: form.list_name,
+    }).then(response => {
+      if (response.data.type === 'positive') {
+        notify({ group: "main", title: response.data.title, type: response.data.type }, response.data.duration);
+      } else {
+        throw new Error(response.data.message);
+      }
+    });
+  };
+  
+  const updateTasks = () => {
+    // Ensure to map tasks correctly and handle task updates
+    const taskUpdates = form.tasks.map((task, index) => {
+      // Use task.hash if available for updating specific tasks
+      const taskHash = props.list.tasks[index]?.hash;
+      return $api.patch(`/update/task/${taskHash}`, {
+        task_name: task.name,
+      });
+    });
+  
+    return Promise.all(taskUpdates).then(responses => {
+      responses.forEach(response => {
+        if (response.data.type !== 'positive') {
+          throw new Error(response.data.message);
+        }
+      });
+    });
+  };
+  
+  const updateListAndTasks = () => {
+    Promise.all([updateList(), updateTasks()])
+      .then(() => {
+        emit('close', { message: 'List and tasks updated successfully' });
+      })
+      .catch(error => {
+        console.error('Error updating list and tasks:', error);
+      });
   };
   
   const addTask = () => {
@@ -93,27 +136,7 @@
   const removeTask = (index) => {
     if (form.tasks.length > 1) {
       form.tasks.splice(index, 1);
-    } else {
-      form.tasks[0].name = ''; 
     }
-  };
-  
-  const updateList = () => {
-    $api.patch(`/update/list/${form.hash}`, form)
-      .then((response) => {
-        if (response.data.type === 'positive') {
-          notify({
-            group: 'main',
-            title: response.data.title,
-            type: response.data.type,
-            duration: response.data.duration
-          });
-          emit('close', response.data.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error updating list:", error.response?.data?.message || error.message);
-      });
   };
   
   const handleCancel = () => {
@@ -121,7 +144,10 @@
   };
   
   onMounted(() => {
-    storeListData();
+    getAllData();
   });
   </script>
+  
+  
+
   

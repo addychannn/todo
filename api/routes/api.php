@@ -127,6 +127,8 @@ Route::middleware([$middleAuth, 'throttle:60,1', 'disabled'])->group(function ()
 
     Route::post('/create/task',[TaskController::class,'createTask']);
 
+    Route::patch('/update/task/{id}',[TaskController::class,'updateTask']);
+
     #endregion
 
 
@@ -134,6 +136,7 @@ Route::middleware([$middleAuth, 'throttle:60,1', 'disabled'])->group(function ()
 
     Route::get('/lists',[ListController::class,'getAllLists']);
 
+    Route::patch('/update/list/{id}',[ListController::class,'updateList']);
 
     #endregion
 

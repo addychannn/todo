@@ -22,7 +22,11 @@ class Task extends AppModel
         'id'
     ];
 
+    protected $cast = [
+        'task_name' => 'array',
+    ];
+
     public function lists(){
-        return $this->hasOne(Lists::class,"hash","list_name");
+        return $this->hasOne(Lists::class,"hash","list_id");
     }
 }

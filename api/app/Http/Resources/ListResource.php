@@ -16,10 +16,10 @@ class ListResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'list_name'=>$this->listName,
+            'list_name'=>$this->list_name,
             'hash'=>$this->hash,
             'deleted_at'=>$this->deleted_at ? Carbon::parse($this->deleted_at)->format('F d, Y h:i A') : null,
-
+            'tasks'=>$this->tasks ? TaskResource::collection($this->tasks) : null
         ];
     }
 }

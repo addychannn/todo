@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Lists;
 use App\Models\Task;
@@ -13,29 +14,33 @@ class TaskController extends Controller
 {
     use TaskTrait;
 
-    public function createTask(CreateTaskRequest $request){
-        $fields = $request ->validated();
-
+    public function createTask(CreateTaskRequest $request)
+    {
+        $fields = $request->validated();
+    
         $list = Lists::create([
-            'list_name'=>$fields['list_name']
+            'list_name' => $fields['list_name']
         ]);
-
-        $task = Task::create([
-            'list_id'=>$list->hash,
-            'task_name'=>$fields['task_name'],
-        ]);
-
+    
+        $tasks = [];
+        if (isset($fields['task_name']) && is_array($fields['task_name'])) {
+            foreach ($fields['task_name'] as $taskName) {
+                $tasks[] = Task::create([
+                    'list_id' => $list->hash,
+                    'task_name' => $taskName,
+                ]);
+            }
+        }
+    
         return response()->json([
-            'task'=> $task? new TaskResource($task):null,
-            'title'=>"Added Task",
-            'duration'=>"3000",
-            'type'=>"positive"
+            'tasks' => TaskResource::collection($tasks), 
+            'title' => "Added Tasks",
+            'duration' => "3000",
+            'type' => "positive"
         ]);
     }
-
+    
     // separate na ung controller if ieedit each field
-
-
 
     public function getAllTasks(Request $request){
         $request->validate([
@@ -52,5 +57,29 @@ class TaskController extends Controller
         'data'=>$tasks?TaskResource::collection($tasks):null,
         'count'=>$count
        ]);
+    }
+
+    public function updateTask(UpdateTaskRequest $request, $id){
+        $fields = $request->validated();
+        $task = Task::byHash($id);
+        
+        if($task){
+            $task->update($fields);
+            $task->refresh();
+            return response()->json([
+                'data'=>$task ? new TaskResource($task):null,
+                'title'=>'Updated Successfully',
+                'type'=>'positive',
+                'duration'=>'3000'
+            ]);
+        }
+        else{
+            return response()->json([
+                'message'=>'not updated',
+                'type'=>'negative',
+                'duration'=>'3000'
+            ]);
+           }
+
     }
 }

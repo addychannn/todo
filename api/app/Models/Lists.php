@@ -20,6 +20,6 @@ class Lists extends AppModel
     ];
 
     public function tasks(){
-        return $this->hasMany(Task::class,"hash","task_name");
+        return $this->hasMany(Task::class,"list_id","hash");
     }
 }

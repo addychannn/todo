@@ -18,6 +18,7 @@ class TaskResource extends JsonResource
         return [
             'task_name'=>$this->task_name,
             'hash'=>$this->hash,
+            'status'=>$this->status,
             'deleted_at'=>$this->deleted_at ? Carbon::parse($this->deleted_at)->format('F d, Y h:i A') : null,
         ];
     }
