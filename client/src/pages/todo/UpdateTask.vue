@@ -83,7 +83,7 @@
   const storeListData = () => {
     form.hash = props.list?.hash || '';
     form.list_name = props.list?.list_name || '';
-    form.tasks = props.list?.tasks?.map(task => ({ name: task.name })) || [{ name: '' }];
+    form.tasks = props.list?.tasks?.map(task => ({ name: task.task_name })) || [{ name: '' }];
   };
   
   const addTask = () => {

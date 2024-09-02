@@ -4,9 +4,7 @@
           <img class="h-auto max-w-full w-full" src="public\images\banner.png" alt="image description">
         </div>
         <div class="flex flex-col gap-4 p-4">
-          <div class="flex justify-center pb-2">
-            <p class="text-xl font-bold">To Do List</p>
-        </div>
+          
         <div class="flex flex-row justify-center">
              <!-- add button -->
               <div class="w-full">
