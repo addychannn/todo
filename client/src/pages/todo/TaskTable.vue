@@ -1,5 +1,6 @@
 <template>
   <div class="grid grid-cols-4 gap-2">
+    
       <!-- cards -->
       <div 
           v-for="list in lists"
@@ -8,9 +9,19 @@
           <div class="flex flex-row justify-between">
               <h5 class="flex justify-start mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">{{ list?.list_name }}</h5>
               <div class="flex justify-end items-start">
-                  <button @click="openEditModal(list.hash)" type="button">
+                  <button 
+                  @click="openEditModal(list.hash)" 
+                  type="button">
                       <TIcon name="edit" class="select-none text-blue-500 hover:text-blue-800 hover:ease-in duration-300 hover:scale-125" size="md" />
                   </button>
+
+                  <div class="flex items-center justify-end">
+                    <button
+                     @click="openConfirmModal(list.hash, 'delete')"
+                     type="button">
+                        <TIcon name="delete" class="select-none text-red-500 " size="md" />
+                    </button> 
+              </div>
               </div>
           </div>
 
@@ -46,12 +57,27 @@
               @close="closeEditModal($event)" />
       </div>
   </div>
-</template>
 
+  <!-- confirmation dialog -->
+  <TDialog 
+      :modelValue="showConfirmModal" 
+      persistent
+      class="relative bg-white rounded-lg shadow dark:bg-gray-900 border border-gray-200">
+          <DeleteConfirmation
+              :text="'Are you sure you to delete?'"
+              v-if="actionMode == 'delete'"
+              @confirm="deleteList()" 
+              @cancel="openConfirmModal()"
+              />
+           
+   </TDialog>  
+</template>
 
 <script setup>
 import { ref, inject, onMounted, watchEffect, reactive } from 'vue';
 import UpdateTask from './UpdateTask.vue';
+import DeleteConfirmation from '../Confirmation.vue';
+import { notify } from '@/scripts';
 
 const $api = inject('$api');
 
@@ -69,17 +95,20 @@ const props = defineProps({
 const emit = defineEmits([
     "loading",
     "doneLoading"
-]);
+  ])
 
 const lists = ref([]);
 const showEditModal = ref(false);
 const currentList = ref(null);
 const list_details = ref(null);
+const listToDelete = ref(null);
+const showConfirmModal = ref(false);
+const actionMode = ref(null);
 
 const searchOptions = reactive({
     page: 1,
     pages: 1,
-    limit: 5,
+    // limit: 0,
     offset: 0,
     term: "",
     total: 0,
@@ -94,13 +123,12 @@ const getAllLists = (term = null) => {
     $api.get('/lists', {
         params: {
             term: term,
-            limit: searchOptions.limit,
+            // limit: searchOptions.limit,
             offset: searchOptions.offset,
         }
     }).then((response) => {
         lists.value = response.data.data;
         searchOptions.total = response.data.count;
-        console.log(lists.value);
     }).finally(() => {
         emit("doneLoading");
     });
@@ -119,14 +147,44 @@ const updateList = (updatedList) => {
             if (index !== -1) {
                 lists.value[index] = updatedList;
             }
-            console.log("List updated successfully");
         })
         .catch((error) => {
             console.error("Error updating list:", error.response?.data?.message || error.message);
         });
 };
 
-const handleUpdate = (updatedList) => {
+const deleteList = () => {
+    $api.delete(`/delete/list/${listToDelete.value}`)
+        .then((response) => {
+            if (response.data.type === 'positive') {
+                lists.value = lists.value.filter(list => list.hash !== listToDelete.value);
+                notify({
+                    group: "main",
+                    title: response.data.message,
+                    type: response.data.type,
+                    duration: response.data.duration
+                });
+                closeConfirmModal();
+            } else {
+                console.warn('Unexpected response type:', response.data.type);
+            }
+        })
+        .catch((error) => {
+            console.error("Error deleting list:", error.response?.data?.message || error.message);
+        });
+};
+
+const openConfirmModal = (listHash = null, mode = null) => {
+    listToDelete.value = listHash;
+    actionMode.value = mode;
+    showConfirmModal.value = true;
+};
+
+const closeConfirmModal = () => {
+    showConfirmModal.value = false;
+};
+
+const handleUpdate = (updatedList, updatedTask) => {
     updateList(updatedList);
     closeEditModal();
 };
@@ -150,3 +208,4 @@ onMounted(() => {
     getAllLists("");
 });
 </script>
+

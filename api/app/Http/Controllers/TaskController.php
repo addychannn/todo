@@ -9,6 +9,7 @@ use App\Models\Lists;
 use App\Models\Task;
 use App\Traits\TaskTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
@@ -17,12 +18,12 @@ class TaskController extends Controller
     public function createTask(CreateTaskRequest $request)
     {
         $fields = $request->validated();
-    
+
         $list = Lists::create([
             'list_name' => $fields['list_name']
         ]);
-    
         $tasks = [];
+       
         if (isset($fields['task_name']) && is_array($fields['task_name'])) {
             foreach ($fields['task_name'] as $taskName) {
                 $tasks[] = Task::create([
@@ -59,27 +60,52 @@ class TaskController extends Controller
        ]);
     }
 
-    public function updateTask(UpdateTaskRequest $request, $id){
+    public function updateTask(UpdateTaskRequest $request, $id) {
         $fields = $request->validated();
         $task = Task::byHash($id);
-        
-        if($task){
+    
+        if ($task) {
             $task->update($fields);
             $task->refresh();
             return response()->json([
-                'data'=>$task ? new TaskResource($task):null,
-                'title'=>'Updated Successfully',
-                'type'=>'positive',
-                'duration'=>'3000'
+                'data' => $task ? new TaskResource($task) : null,
+                'title' => 'Updated Successfully',
+                'type' => 'positive',
+                'duration' => '3000'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'not updated',
+                'type' => 'negative',
+                'duration' => '3000'
             ]);
         }
-        else{
-            return response()->json([
-                'message'=>'not updated',
-                'type'=>'negative',
-                'duration'=>'3000'
-            ]);
-           }
-
     }
+
+    public function deleteTask($id){
+       
+    $task = Task::byHash($id);
+    
+        if ($task) {
+            $task->delete();
+            $task->refresh();
+            return response()->json([
+                'data' => null,
+                'title' => 'Deleted',
+                'type' => 'negative',
+                'duration' => '3000'
+            ]);
+        } else {
+            Log::warning('Task not found', ['task_id' => $id]);
+    
+            return response()->json([
+                'message' => 'Task not found',
+                'type' => 'warning',
+            ]);
+        }
+    }
+    
+    
+    
+    
 }

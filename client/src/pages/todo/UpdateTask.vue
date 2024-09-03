@@ -8,20 +8,23 @@
         v-model="form.list_name"
       />
       
-      <!-- Task Inputs -->
-      <div v-for="(task, index) in form.tasks" :key="index" class="flex gap-2 items-center">
-        <TInput
-          :label="'Task Name'"
-          v-model="task.name"
-        />
-        <button
-          type="button"
-          @click="removeTask(index)"
-          class="text-red-500 hover:text-red-700"
-        >
-          <TIcon name="delete" size="md" />
-        </button>
-      </div>
+    <!-- Task Inputs -->
+    <div v-for="(task, index) in form.tasks" :key="index" class="flex gap-2 items-center">
+      <TInput
+        :label="'Task Name'"
+        v-model="task.name"
+        class="w-full"
+      />
+      
+      <button
+        type="button"
+        @click="openConfirmModal(task.hash, 'delete')"
+        class="text-red-500 hover:text-red-700"
+      >
+        <TIcon name="close" class="select-none text-red-500 hover:text-red-800 hover:ease-in duration-300 hover:scale-125" size="md" />
+      </button>
+
+    </div>
       
       <!-- Add Task Button -->
       <div class="w-full mt-4">
@@ -49,79 +52,136 @@
         <!-- Update Button -->
         <button
           type="button"
-          @click="updateList"
+          @click="update"
           class="text-white bg-green-700 border focus:outline-none hover:bg-green-800 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-800 dark:text-white dark:border-green-600 dark:hover:bg-green-700 dark:hover:border-green-600 dark:focus:ring-green-700"
         >
           UPDATE
         </button>
       </div>
     </div>
+
+    <!-- confirmation dialog -->
+    <TDialog 
+      :modelValue="showConfirmModal" 
+      persistent
+      class="relative bg-white rounded-lg shadow dark:bg-gray-900 border border-gray-200">
+          <DeleteConfirmation
+              :text="'Are you sure you to delete?'"
+              v-if="actionMode == 'delete'"
+              @confirm="deleteTask()" 
+              @cancel="openConfirmModal()"
+              />
+           
+   </TDialog>  
   </template>
   
   
   <script setup>
-  import { reactive, inject, onMounted } from 'vue';
-  import { notify } from '@/scripts';
-  
-  const $api = inject('$api');
-  
-  const props = defineProps({
-    list: {
-      type: Object,
-      default: null
-    }
-  });
-  
-  const emit = defineEmits(['close']);
-  
-  const form = reactive({
-    hash: '',
-    list_name: '',
-    tasks: [{ name: '' }]
-  });
-  
-  const storeListData = () => {
-    form.hash = props.list?.hash || '';
-    form.list_name = props.list?.list_name || '';
-    form.tasks = props.list?.tasks?.map(task => ({ name: task.task_name })) || [{ name: '' }];
-  };
-  
-  const addTask = () => {
-    form.tasks.push({ name: '' });
-  };
-  
-  const removeTask = (index) => {
-    if (form.tasks.length > 1) {
-      form.tasks.splice(index, 1);
-    } else {
-      form.tasks[0].name = ''; 
-    }
-  };
-  
-  const updateList = () => {
-    $api.patch(`/update/list/${form.hash}`, form)
-      .then((response) => {
-        if (response.data.type === 'positive') {
-          notify({
-            group: 'main',
-            title: response.data.title,
-            type: response.data.type,
-            duration: response.data.duration
-          });
-          emit('close', response.data.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error updating list:", error.response?.data?.message || error.message);
-      });
-  };
-  
-  const handleCancel = () => {
-    emit('close');
-  };
-  
-  onMounted(() => {
-    storeListData();
-  });
-  </script>
+import { ref, reactive, inject, onMounted } from 'vue';
+import { notify } from '@/scripts';
+import DeleteConfirmation from '../Confirmation.vue';
+
+const $api = inject('$api');
+
+const props = defineProps({
+  list: {
+    type: Object,
+    default: null
+  },
+  task: {
+    type: Array,
+    default: null
+  }
+});
+
+const emit = defineEmits(['close']);
+
+const showConfirmModal = ref(false);
+const taskToDelete = ref(null);
+const actionMode = ref(null);
+
+const form = reactive({
+  hash: '',
+  list_name: '',
+  tasks: [{ name: '' }]
+});
+
+const storeListData = () => {
+  form.hash = props.list?.hash || '';
+  form.list_name = props.list?.list_name || '';
+  form.tasks = props.list?.tasks?.map(task => ({
+    name: task.task_name,
+    hash: task.hash
+  })) || [{ name: '' }];
+};
+
+const addTask = () => {
+  form.tasks.push({ name: '' });
+};
+
+const update = () => {
+  // Send a single request to update both list and tasks
+  $api.patch(`/update/list/${form.hash}`, form)
+    .then((response) => {
+      if (response.data.type === 'positive') {
+        notify({
+          group: 'main',
+          title: response.data.title,
+          type: response.data.type,
+          duration: response.data.duration
+        });
+        emit('close', response.data.data);
+      }
+    })
+    .catch((error) => {
+      console.error("Error updating list and tasks:", error.response?.data?.message || error.message);
+    });
+};
+
+const deleteTask = () => {
+  $api.delete(`/delete/task/${taskToDelete.value}`)
+    .then((response) => {
+      if (response.data.type === 'negative') {
+        form.tasks = form.tasks.filter(task => task.hash !== taskToDelete.value);
+
+        notify({
+          group: "main",
+          title: response.data.title,
+          type: response.data.type,
+          duration: response.data.duration
+        });
+
+        openConfirmModal();
+      } else {
+        console.warn('Unexpected response type:', response.data.type);
+      }
+    })
+    .catch((error) => {
+      console.error("Error deleting task:", error.response?.data?.message || error.message);
+    });
+};
+
+const removeTask = (index) => {
+  if (form.tasks.length > 1) {
+    form.tasks.splice(index, 1);
+  } else {
+    form.tasks[0].name = '';
+  }
+};
+
+const openConfirmModal = (taskHash = null, mode = null) => {
+  taskToDelete.value = taskHash;
+  actionMode.value = mode;
+  showConfirmModal.value = !showConfirmModal.value;
+};
+
+const handleCancel = () => {
+  emit('close');
+};
+
+onMounted(() => {
+  storeListData();
+});
+</script>
+
   

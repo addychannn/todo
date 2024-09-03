@@ -1,6 +1,7 @@
 <template>
     <div class="flex flex-col max-w-sm mx-auto gap-4">
       <h2 class="text-lg font-semibold mb-4">Create List</h2>
+      <!-- Form -->
         <TInput
             :label="'List Name'"
             v-model="form.list_name"
@@ -51,7 +52,7 @@
   </template>
   
   <script setup>
-  import { ref, reactive, inject } from 'vue';
+  import { reactive, inject } from 'vue';
   import { notify } from '@/scripts';
   
   const $api = inject('$api');
@@ -76,14 +77,13 @@
   }
   
   const addList = () => {
-    $api.post('/create/task', form).then((response) => {
-      notify({ group: "main", title: response.data.title, type: response.data.type }, response.data.duration);
-      emit("added", response.data.task);
-    }).catch((error) => {
-      console.error('Error adding task:', error);
-    });
-  }
-  
+  $api.post('/create/task', form).then((response) => {
+    notify({ group: "main", title: response.data.title, type: response.data.type }, response.data.duration);
+    emit("added", response.data.task); 
+  }).catch((error) => {
+    console.error('Error adding task:', error);
+  });
+}
   const handleCancel = () => {
     emit('close');
   };
