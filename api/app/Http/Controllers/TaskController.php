@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddNewTaskRequest;
 use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
@@ -40,7 +41,25 @@ class TaskController extends Controller
             'type' => "positive"
         ]);
     }
-    
+
+    public function addNewTask(AddNewTaskRequest $request)
+    {
+        $fields = $request->validated();
+
+        $task = Task::create([
+            'list_id' => $fields['list_id'],
+            'task_name' => $fields['task_name'],
+        ]);
+
+        return response()->json([
+            'task' => $task ? new TaskResource($task) : null,
+            'title' => 'Added task',
+            'type' => 'positive',
+            'duration' => '3000'
+        ]);
+    }
+
+
     // separate na ung controller if ieedit each field
 
     public function getAllTasks(Request $request){
@@ -104,6 +123,16 @@ class TaskController extends Controller
             ]);
         }
     }
+
+    public function updateTaskStatus(Request $request, $taskHash)
+    {
+        $task = Task::where('hash', $taskHash)->firstOrFail();
+        $task->status = $request->input('status');
+        $task->save();
+
+        return response()->json(['message' => 'Task status updated successfully', 'type' => 'positive']);
+    }
+
     
     
     

@@ -20,16 +20,17 @@
                 />
             </div>
             <div class="flex flex-row items-center  gap-2">
-                <div class="flex flex-col">
-                    <div @click="confirm" class="flex flex-col bg-emerald-400 dark:bg-white p-2 rounded-md cursor-pointer text-white dark:text-dark hover:bg-emerald-500 dark:hover:bg-emerald-500 dark:hover:text-white">
-                        <span>{{ props.confirmButtonName }}</span>
-                    </div>
-                </div>
                 <div @click="cancel" class="flex flex-col">
-                    <div class="flex flex-col bg-red-400 p-2 rounded-md cursor-pointer text-white hover:bg-red-500">
+                    <div class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                         <span>{{ props.cancelButtonName }}</span>
                     </div>
                 </div>
+                <div class="flex flex-col">
+                    <div @click="confirm" class="text-white bg-green-700 border focus:outline-none hover:bg-green-800 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-800 dark:text-white dark:border-green-600 dark:hover:bg-green-700 dark:hover:border-green-600 dark:focus:ring-green-700">
+                        <span>{{ props.confirmButtonName }}</span>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </Page>

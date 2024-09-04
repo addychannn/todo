@@ -127,9 +127,15 @@ Route::middleware([$middleAuth, 'throttle:60,1', 'disabled'])->group(function ()
 
     Route::post('/create/task',[TaskController::class,'createTask']);
 
+    Route::post('/add/task',[TaskController::class,'addNewTask']);
+
     Route::patch('/update/task/{id}',[TaskController::class,'updateTask']);
 
+    Route::patch('/update/task/{id}',[TaskController::class,'updateTaskStatus']);
+
     Route::delete('/delete/task/{id}',[TaskController::class,'deleteTask']);
+
+    
 
     #endregion
 
@@ -138,7 +144,7 @@ Route::middleware([$middleAuth, 'throttle:60,1', 'disabled'])->group(function ()
 
     Route::get('/lists',[ListController::class,'getAllLists']);
 
-    Route::patch('/update/list/{id}',[ListController::class,'updateListAndTasks']);
+    Route::patch('/update/list/{id}',[ListController::class,'updateList']);
 
     Route::delete('/delete/list/{id}',[ListController::class,'deleteList']);
 

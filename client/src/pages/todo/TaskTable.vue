@@ -1,6 +1,5 @@
 <template>
   <div class="grid grid-cols-4 gap-2">
-    
       <!-- cards -->
       <div 
           v-for="list in lists"
@@ -64,7 +63,7 @@
       persistent
       class="relative bg-white rounded-lg shadow dark:bg-gray-900 border border-gray-200">
           <DeleteConfirmation
-              :text="'Are you sure you to delete?'"
+              :text="'Are you sure you want to delete?'"
               v-if="actionMode == 'delete'"
               @confirm="deleteList()" 
               @cancel="openConfirmModal()"
@@ -74,7 +73,7 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted, watchEffect, reactive } from 'vue';
+import { ref, inject, onMounted, watchEffect, reactive, watch } from 'vue';
 import UpdateTask from './UpdateTask.vue';
 import DeleteConfirmation from '../Confirmation.vue';
 import { notify } from '@/scripts';
@@ -174,10 +173,26 @@ const deleteList = () => {
         });
 };
 
+const updateTaskStatus = (taskHash, newStatus) => {
+    $api.patch(`/update/task/${taskHash}`, { status: newStatus })
+        .then(response => {
+            notify({
+                group: "main",
+                title: response.data.message,
+                type: response.data.type,
+                duration: response.data.duration
+            });
+        })
+        .catch(error => {
+            console.error("Error updating task status:", error.response?.data?.message || error.message);
+        });
+};
+
+
 const openConfirmModal = (listHash = null, mode = null) => {
     listToDelete.value = listHash;
     actionMode.value = mode;
-    showConfirmModal.value = true;
+    showConfirmModal.value = !showConfirmModal.value;
 };
 
 const closeConfirmModal = () => {
@@ -202,6 +217,14 @@ watchEffect(() => {
         searchOptions.offset = 0;
         getAllLists(props.searchedTerms);
     }
+
+    lists.value.forEach(list => {
+        list.tasks.forEach(task => {
+            watch(() => task.status, (newStatus) => {
+                updateTaskStatus(task.hash, newStatus);
+            });
+        });
+    });
 });
 
 onMounted(() => {

@@ -1,5 +1,10 @@
 <template>
     <div class="flex flex-col gap-4 p-4">
+      <TInnerLoading
+      :text="'Loading'"
+      :active="loader"
+      :isFullScreen="true"
+      />
       <div class="flex justify-start">  
               <!-- Welcome Banner  -->
           <div class="flex flex-row gap-4 w-full p-10 rounded-lg bg-gradient-to-r from-emerald-500 via-emerald-600">
@@ -10,9 +15,7 @@
               <a class="text-white text-2xl font-semibold">Good Morning!</a>
               <a class="text-white text-lg">John Doe</a>
             </div>
-           
           </div>
-
       </div>
         <div class="flex flex-col gap-4 p-4">
           <input @input="debounceInput" type="text" id="table-search-users" class="block p-2 text-md text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for List">
@@ -24,24 +27,16 @@
                         Add Task
                 </button> 
               </div>
-              <!-- <div class="flex items-center justify-end">
-                <button type="button">
-                    <TIcon name="delete" class="select-none text-red-500 " size="md" />
-                </button> 
-              </div> -->
-
         </div>   
         <div>
             <TaskTable
             :task = "storage" 
             :searchedTerms="searchedTerms"
+            @loading="loader = true"
+            @doneLoading="loader = false"
             />
         </div>
-
         </div>
-
-
-      
     </div>
 
      <!-- Add Task Modal -->
@@ -67,13 +62,15 @@ import TaskTable from './TaskTable.vue';
 import CreateTask from './CreateTask.vue';
 import { debounce } from 'lodash';
 
+const loader = ref(false);
 const showModal = ref(false);
 const storage = ref(null);
 const searchedTerms= ref("");
 
 const closeModal =(event)=>{
     showModal.value= false;
-    storage.value=event
+    storage.value=event;
+ 
 }
 
 const debounceInput = debounce((e)=>{
