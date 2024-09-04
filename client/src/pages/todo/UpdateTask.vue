@@ -14,13 +14,6 @@
         class="w-full"
       />
 
-      <!-- <button
-        type="button"
-        @click="openConfirmModal(task.hash, 'delete')"
-        class="text-red-500 hover:text-red-700"
-      >
-        <TIcon name="close" class="select-none text-red-500 hover:text-red-800 hover:ease-in duration-300 hover:scale-125" size="md" />
-      </button> -->
     </div>
     
     <div class="w-full mt-4">
@@ -110,24 +103,6 @@ const storeListData = () => {
 
 const addInputTask = () => {
   form.tasks.push({ name: '', isNew: true });
-};
-
-const addNewTask = (task) => {
-  if (task.name.trim() === '') {
-    notify({ group: "main", title: "Task name cannot be empty", type: 'negative' });
-    return;
-  }
-  
-  $api.post('/add/task', {
-    list_id: form.hash,
-    task_name: task.name
-  }).then((response) => {
-    notify({ group: "main", title: response.data.title, type: response.data.type }, response.data.duration);
-    task.isNew = false; 
-    emit("added", response.data.task); 
-  }).catch((error) => {
-    console.error('Error adding task:', error);
-  });
 };
 
 const update = () => {
