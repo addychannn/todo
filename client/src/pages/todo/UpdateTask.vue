@@ -13,23 +13,14 @@
         v-model="task.name"
         class="w-full"
       />
-      
-      <button
-        v-if="task.isNew"
-        type="button"
-        @click="addNewTask(task)"
-        class="text-green-500 hover:text-green-700"
-      >
-        <TIcon name="check" class="select-none text-green-500 hover:text-green-800 hover:ease-in duration-300 hover:scale-125" size="md" />
-      </button>
-      
-      <button
+
+      <!-- <button
         type="button"
         @click="openConfirmModal(task.hash, 'delete')"
         class="text-red-500 hover:text-red-700"
       >
         <TIcon name="close" class="select-none text-red-500 hover:text-red-800 hover:ease-in duration-300 hover:scale-125" size="md" />
-      </button>
+      </button> -->
     </div>
     
     <div class="w-full mt-4">

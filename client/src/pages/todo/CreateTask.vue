@@ -1,7 +1,6 @@
 <template>
   <div class="flex flex-col max-w-sm mx-auto gap-4">
     <h2 class="text-lg font-semibold mb-4">Create List</h2>
-    <!-- Form -->
     <TInput
       :label="'List Name'"
       v-model="form.list_name"
@@ -31,7 +30,7 @@
       </button>
     </div>
     <div class="grid grid-cols-2 pt-5">
-      <!-- Cancel Button -->
+    
       <button
         type="button"
         @click="handleCancel"
@@ -39,7 +38,7 @@
       >
         CANCEL
       </button>
-      <!-- Add Button -->
+    
       <button
         type="button"
         @click="addList"

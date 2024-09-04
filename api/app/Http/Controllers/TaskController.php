@@ -110,8 +110,8 @@ class TaskController extends Controller
             $task->refresh();
             return response()->json([
                 'data' => null,
-                'title' => 'Deleted',
-                'type' => 'negative',
+                'title' => 'Deleted Successfully',
+                'type' => 'positive',
                 'duration' => '3000'
             ]);
         } else {

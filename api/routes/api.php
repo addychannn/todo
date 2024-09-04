@@ -144,7 +144,7 @@ Route::middleware([$middleAuth, 'throttle:60,1', 'disabled'])->group(function ()
 
     Route::get('/lists',[ListController::class,'getAllLists']);
 
-    Route::patch('/update/list/{id}',[ListController::class,'updateList']);
+    Route::patch('/update/list/{id}',[ListController::class,'updateListAndTasks']);
 
     Route::delete('/delete/list/{id}',[ListController::class,'deleteList']);
 

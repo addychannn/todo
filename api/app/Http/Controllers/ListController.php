@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateListRequest;
 use App\Http\Resources\ListResource;
 use App\Models\Lists;
 use App\Models\Task;
@@ -29,58 +28,51 @@ class ListController extends Controller
     }
     
 
-    // public function updateListAndTasks(Request $request, $id) {
-    //     $listData = $request->only(['list_name']);
-    //     $tasksData = $request->input('tasks', []);
-        
-    //     $list = Lists::byHash($id);
-        
-    //     if ($list) {
-
-    //         $list->update($listData);
-            
-    //         foreach ($tasksData as $taskData) {
-    //             $task = Task::byHash($taskData['hash']);
-    //             if ($task) {
-    //                 $task->update([
-    //                     'task_name' => $taskData['name']
-    //                 ]);
-    //             }
-    //         }
-            
-    //         return response()->json([
-    //             'data' => new ListResource($list),
-    //             'title' => 'Updated Successfully',
-    //             'type' => 'positive',
-    //             'duration' => '3000'
-    //         ]);
-    //     } else {
-    //         return response()->json([
-    //             'message' => 'List not found',
-    //             'type' => 'negative',
-    //             'duration' => '3000'
-    //         ]);
-    //     }
-    // }
-
-    public function updateList(UpdateListRequest $request, $id){
-        $fields = $request->validated();
-
+    public function updateListAndTasks(Request $request, $id) {
+        $fields = $request->validate([
+            "list_name" => "required",
+            "tasks" => "nullable|array"
+        ]);
+    
         $list = Lists::byHash($id);
-
-        if($list){
-            $list->update($fields);
-            $list->refresh();
-
-            return response([
-                'data'=> $list ? new ListResource($list):null,
-                'title'=>'Updated Successfully',
-                'type'=>'positive',
-                'duration'=>'3000'
+    
+        if ($list) {
+            $list->update(['list_name' => $fields["list_name"]]);
+    
+            if ($fields["tasks"]) {
+                foreach ($fields["tasks"] as $taskData) {
+                    if (isset($taskData['hash'])) {
+                        // Update existing task
+                        $task = Task::byHash($taskData['hash']);
+                        if ($task) {
+                            $task->update([
+                                'task_name' => $taskData['name']
+                            ]);
+                        }
+                    } else {
+                        // Create new task
+                        Task::create([
+                            'list_id' => $list->hash,
+                            'task_name' => $taskData['name']
+                        ]);
+                    }
+                }
+            }
+            return response()->json([
+                'data' => new ListResource($list),
+                'title' => 'Updated Successfully',
+                'type' => 'positive',
+                'duration' => '3000'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'List not found',
+                'type' => 'negative',
+                'duration' => '3000'
             ]);
         }
-
     }
+    
 
     public function deleteList($id) {
         $list = Lists::byHash($id);
